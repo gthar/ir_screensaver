@@ -2,6 +2,11 @@
 
 ###############################################################################
 
+KEYBOARD_DEV = "/dev/input/event0"
+IDLE_TIME = 30  # minutes
+
+###############################################################################
+
 import sys
 import time
 
@@ -13,9 +18,9 @@ from thread_funs import make_counter, make_key_watcher
 
 ###############################################################################
 
-clock = Clock(0, 10, 1)
+clock = Clock(0, IDLE_TIME*60, 1)
 screen = Screen(True)
-keyboard = Keyboard("/dev/input/event0")
+keyboard = Keyboard(KEYBOARD_DEV)
 
 counter, count_stopper = make_counter(clock, screen)
 key_watcher, key_stopper = make_key_watcher(clock, screen, keyboard)
