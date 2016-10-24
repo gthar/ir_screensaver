@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
-
 class Screen:
+    """
+    We can turn off the screen with tvservice
+    """
+
     def __init__(self, state):
         self.state = state
 
