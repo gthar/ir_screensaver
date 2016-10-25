@@ -2,41 +2,46 @@
 
 ###############################################################################
 
+input_devs = ["/dev/input/event0",
+              "/dev/input/event8",
+              "/dev/input/event12"]
+
 KEYBOARD_DEV = "/dev/input/event0"
-IDLE_TIME = 30  # minutes
+IDLE_TIME = 0.1  # minutes
 
 ###############################################################################
 
 import sys
 import time
 
-from clock import Clock
-from keyboard import Keyboard
+from count_down import CountDown
+from input_dev import InputDev
 from screen import Screen
 
-from thread_funs import make_counter, make_key_watcher
+from thread_funs import make_counter, make_dev_watchers
 
 ###############################################################################
 
-clock = Clock(0, IDLE_TIME*60, 1)
+clock = CountDown(IDLE_TIME*60, 1)
 screen = Screen(True)
-keyboard = Keyboard(KEYBOARD_DEV)
+devs = [InputDev(x) for x in input_devs]
 
 counter, count_stopper = make_counter(clock, screen)
-key_watcher, key_stopper = make_key_watcher(clock, screen, keyboard)
+dev_watchers, dev_stopper = make_dev_watchers(clock, screen, devs)
 
 ###############################################################################
 
 def main ():
     counter.start()
-    key_watcher.start()
+    for d in dev_watchers:
+        d.start()
 
     while True:
         try:
             time.sleep(1)
         except KeyboardInterrupt:
             count_stopper.set()
-            key_stopper.set()
+            dev_stopper.set()
             return 0
 
 sys.exit(main())

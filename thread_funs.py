@@ -22,19 +22,17 @@ def make_counter(clock, screen):
 
 ###############################################################################
 
-def key_listener(clock, screen, keyboard, stop_it):
-    while not stop_it.is_set() and keyboard.read():
+def in_dev_listener(clock, screen, in_dev, stop_it):
+    while not stop_it.is_set() and in_dev.read():
         clock.reset()
         screen.turn(True)
 
 
-def make_key_watcher(clock, screen, keyboard):
+def make_dev_watchers(clock, screen, devs):
     stopper = threading.Event()
-    thread = threading.Thread(target=key_listener,
-                              args=(clock,
-                                    screen,
-                                    keyboard,
-                                    stopper))
-    return thread, stopper
+    threads = [threading.Thread(target=in_dev_listener,
+                                args=(clock, screen, dev, stopper))
+               for dev in devs]
+    return threads, stopper
 
 ###############################################################################

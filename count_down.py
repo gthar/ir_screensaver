@@ -3,27 +3,26 @@
 import time
 
 
-class Clock:
-    def __init__(self, start, end, step):
-        self.start = start
-        self.end = end
+class CountDown:
+    def __init__(self, count, step):
+        self.count = count
         self.step = step
-        self.state = start
+        self.state = count
 
     def advance(self):
         """
         Advance time and report whether the time is finished
         """
-        if self.state <= self.end:
-            time.sleep(self.step)
-            self.state += self.step
+        if self.state >= 0:
             print(self.state)
+            time.sleep(self.step)
+            self.state -= self.step
             return False
         else:
             return True
 
-    def reset(self):
-        self.state = self.start
-
     def set_to(self, n):
         self.state = n
+
+    def reset(self):
+        self.set_to(self.count)
