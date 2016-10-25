@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import time
-
 from threadable import Threadable
 
 
@@ -25,11 +24,8 @@ class CountDown(Threadable):
         else:
             return True
 
-    def set_to(self, n):
-        self.state = n
-
     def reset(self):
-        self.set_to(self.count)
+        self.state = self.count
 
     def loop(self):
         if self.advance():
