@@ -5,7 +5,6 @@
 DEV_FILES = ["/dev/input/event0",
              "/dev/input/event8",
              "/dev/input/event12"]
-
 IDLE_TIME = 0.1  # minutes
 
 ###############################################################################
@@ -20,34 +19,30 @@ from screen import Screen
 ###############################################################################
 
 screen = Screen(True)
-
-def iddle():
-    screen.turn(False)
-
-clock = CountDown(IDLE_TIME*60, 1, iddle)
+clock = CountDown(IDLE_TIME*60, 1, lambda: screen.turn(False))
 
 def activity():
     clock.reset()
     screen.turn(True)
 
-devs = [InputDev(x, activity) for x in DEV_FILES]
+procs = [InputDev(x, activity) for x in DEV_FILES]
+procs.append(clock)
 
 ###############################################################################
 
 def main ():
-    clock.start()
-    for d in devs:
-        d.start()
+    for p in procs:
+        p.start()
 
     while True:
         try:
             time.sleep(1)
         except KeyboardInterrupt:
-            clock.stop()
-            for d in devs:
-                d.stop()
+            for p in procs:
+                p.stop()
             return 0
 
-sys.exit(main())
+if __name__ == "__main__":
+    sys.exit(main())
 
 ##############################################################################
