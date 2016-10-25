@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
 import time
-import threading
+
+from threadable import Threadable
 
 
-class CountDown:
+class CountDown(Threadable):
     def __init__(self, count, step=1, action=lambda: None):
         self.count = count
         self.step = step
         self.state = count
         self.action = action
-        self.stopper = threading.Event()
+        super().__init__()
 
     def advance(self):
         """
@@ -30,14 +31,6 @@ class CountDown:
     def reset(self):
         self.set_to(self.count)
 
-    def go(self):
-        while not self.stopper.is_set():
-            if self.advance():
-                self.action()
-
-    def start(self):
-        threading.Thread(target=self.go).start()
-
-    def stop(self):
-        self.stopper.set()
-
+    def loop(self):
+        if self.advance():
+            self.action()
