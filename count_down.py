@@ -30,13 +30,13 @@ class CountDown:
     def reset(self):
         self.set_to(self.count)
 
-    def countdown(self, stopper):
-        while not stopper.is_set():
+    def go(self):
+        while not self.stopper.is_set():
             if self.advance():
                 self.action()
 
     def start(self):
-        threading.Thread(target=self.countdown, args=(self.stopper, )).start()
+        threading.Thread(target=self.go).start()
 
     def stop(self):
         self.stopper.set()

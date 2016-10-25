@@ -17,14 +17,14 @@ class Sensor:
     def sense(self):
         return bool(GPIO.input(self.pin))
 
-    def watcher(self, stopper):
-        while not stopper.is_set():
+    def go(self):
+        while not self.stopper.is_set():
             if self.sense():
                 self.action()
             time.sleep(0.1)
 
     def start(self):
-        threading.Thread(target=self.watcher, args=(self.stopper, )).start()
+        threading.Thread(target=self.go).start()
 
     def stop(self):
         self.stopper.set()

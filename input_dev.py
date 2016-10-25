@@ -17,14 +17,14 @@ class InputDev:
     def close(self):
         self.fh.close()
 
-    def watcher(self, stopper=False):
-        while not stopper.is_set():
+    def go(self):
+        while not self.stopper.is_set():
             self.read()
             self.action()
 
     def start(self):
         self.fh = open(self.event_file, 'rb')
-        threading.Thread(target=self.watcher, args=(self.stopper, )).start()
+        threading.Thread(target=self.go).start()
 
     def stop(self):
         self.stopper.set()
