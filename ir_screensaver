@@ -29,7 +29,7 @@ def activity():
     screen.turn(True)
 
 procs = [InputDev(x, activity) for x in DEV_FILES]
-sensor = Sensor(SENSOR_PIN, action)
+sensor = Sensor(SENSOR_PIN, activity)
 procs.append(sensor)
 procs.append(clock)
 
