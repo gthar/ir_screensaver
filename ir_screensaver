@@ -16,6 +16,7 @@ import time
 from count_down import CountDown
 from input_dev import InputDev
 from screen import Screen
+from sensor import Sensor
 
 ###############################################################################
 
