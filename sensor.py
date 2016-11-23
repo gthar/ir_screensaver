@@ -3,6 +3,8 @@
 import RPi.GPIO as GPIO
 import time
 
+from threadable import Threadable
+
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 
