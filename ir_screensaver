@@ -2,14 +2,13 @@
 
 ###############################################################################
 
-DEV_FILES = ["/dev/input/event0",
-             "/dev/input/event8",
-             "/dev/input/event12"]
-IDLE_TIME = 0.1  # minutes
+DEV_PATTERN = "/dev/input/event*"
+IDLE_TIME = 10  # minutes
 SENSOR_PIN = 11
 
 ###############################################################################
 
+import glob
 import sys
 import time
 
@@ -28,7 +27,7 @@ def activity():
     clock.reset()
     screen.turn(True)
 
-procs = [InputDev(x, activity) for x in DEV_FILES]
+procs = [InputDev(x, activity) for x in glob.glob(DEV_PATTERN)]
 sensor = Sensor(SENSOR_PIN, activity)
 procs.append(sensor)
 procs.append(clock)
