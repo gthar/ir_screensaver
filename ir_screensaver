@@ -3,6 +3,8 @@
 ###############################################################################
 
 DEV_PATTERN = "/dev/input/event*"
+STATE_FNAME = "/home/rilla/.screen_state"
+DEFAULT_STATE = True
 IDLE_TIME = 10  # minutes
 SENSOR_PIN = 11
 
@@ -19,12 +21,29 @@ from sensor import Sensor
 
 ###############################################################################
 
+def query_state(fname, default_state=True):
+    values = {"on":    True,
+              "1":     True,
+              "true":  True,
+              "t":     True,
+              "off":   False,
+              "0":     False,
+              "f":     False,
+              "false": False}
+    try:
+        with open(fname) as fh:
+            screen_state = values[fh.read().strip().split()[0].lower()]
+    except:
+        screen_state = default_state
+    return screen_state
+
 screen = Screen(True)
 clock = CountDown(IDLE_TIME*60, 1, lambda: screen.turn(False))
 
 def activity():
     clock.reset()
-    screen.turn(True)
+    wanted_state = query_state(STATE_FNAME, DEFAULT_STATE)
+    screen.turn(wanted_state)
 
 procs = [InputDev(x, activity) for x in glob.glob(DEV_PATTERN)]
 sensor = Sensor(SENSOR_PIN, activity)
