@@ -17,7 +17,6 @@ class CountDown(Threadable):
         Advance time and report whether the time is finished
         """
         if self.state >= 0:
-            print(self.state)
             time.sleep(self.step)
             self.state -= self.step
             return False
