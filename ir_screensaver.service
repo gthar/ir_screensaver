@@ -1,0 +1,8 @@
+[Unit]
+Description=Screensaver that responds to a PIR sensor
+
+[Service]
+ExecStart=/home/rilla/ir_screensaver/ir_screensaver
+
+[Install]
+WantedBy=multi-user.target
