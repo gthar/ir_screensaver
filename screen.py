@@ -14,12 +14,12 @@ class Screen:
 
         if new_state and not self.state:
             self.state = True
-            #os.system("/home/rilla/bin/screen_on")
+            os.system("/home/rilla/bin/screen_on")
             print("Turn screen on")
 
         elif not new_state and self.state:
             self.state = False
-            #os.system("/home/rilla/bin/screen_off")
+            os.system("/home/rilla/bin/screen_off")
             print("Turn screen off")
 
     def toggle(self):
