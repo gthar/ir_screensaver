@@ -6,7 +6,6 @@ class Screen:
     """
     We can turn off the screen with tvservice
     """
-
     def __init__(self, state=True, target_state=True):
         self.state = state
         self.target_state = target_state
