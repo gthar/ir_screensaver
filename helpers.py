@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import time
-
 def activity(screen, clock):
     def f():
         clock.reset()
