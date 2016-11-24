@@ -3,7 +3,7 @@ import socket
 from threadable import Threadable
 
 class SocketHandler(Threadable):
-    def __init__(self, actions={}, port=10000, host='127.0.0.1', max_length=4096):
+    def __init__(self, port=10000, host='127.0.0.1', max_length=4096, **actions):
         self.actions = actions
         self.max_length = max_length
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

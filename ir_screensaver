@@ -35,11 +35,11 @@ clock = CountDown(IDLE_TIME*60, 1, lambda: screen.turn(False))
 
 procs = []
 
-socket_handler = SocketHandler({"wake":    activity(screen, clock),
-                                "set_on":  set_on(screen, clock),
-                                "set_off": set_off(screen)},
-                               PORT,
-                               HOST)
+socket_handler = SocketHandler(wake    = activity(screen, clock),
+                               set_on  = set_on(screen, clock),
+                               set_off = set_off(screen),
+                               port    = PORT,
+                               host    = HOST)
 
 #procs.append(sensor)
 procs.append(clock)
@@ -57,4 +57,4 @@ def main ():
 if __name__ == "__main__":
     sys.exit(main())
 
-##############################################################################
+#############################################################################
