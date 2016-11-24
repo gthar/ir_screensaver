@@ -2,13 +2,17 @@
 
 import socket
 import sys
+import yaml
 
-HOST = '127.0.0.1'
-PORT = 10000
+CONFIG_FILE = "/home/rilla/code/python/ir_screensaver/example_config.yaml"
+
+with open(CONFIG_FILE) as fh:
+    config = yaml.load(fh)
+
 s = socket.socket()
 
 try:
-    s.connect((HOST, PORT))
+    s.connect((config["host"], config["port"]))
 except ConnectionRefusedError:
     print("server not running")
     s.close()

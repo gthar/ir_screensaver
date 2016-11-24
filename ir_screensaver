@@ -2,52 +2,21 @@
 
 ###############################################################################
 
-DEV_PATTERN = "/dev/input/event*"
-STATE_FNAME = "/home/rilla/.screen_state"
-DEFAULT_STATE = True
-#IDLE_TIME = 10  # minutes
-IDLE_TIME = 0.1  # minutes
-SENSOR_PIN = 11
-PORT = 10000
-HOST = '127.0.0.1'
+CONFIG_FILE = "/home/rilla/code/python/ir_screensaver/example_config.yaml"
 
 ###############################################################################
 
-import glob
 import sys
 import time
 
-from count_down import CountDown
-from input_dev import InputDev
-from screen import Screen
-#from sensor import Sensor
-from socket_handler import SocketHandler
-
-from helpers import activity, set_on, set_off
-
-###############################################################################
-
-screen = Screen(state=True, target_state=DEFAULT_STATE)
-clock = CountDown(IDLE_TIME*60, 1, lambda: screen.turn(False))
-
-# procs = [InputDev(x, activity(screen, clock)) for x in glob.glob(DEV_PATTERN)]
-# sensor = Sensor(SENSOR_PIN, activity(screen, clock))
-
-procs = []
-
-socket_handler = SocketHandler(wake    = activity(screen, clock),
-                               set_on  = set_on(screen, clock),
-                               set_off = set_off(screen),
-                               port    = PORT,
-                               host    = HOST)
-
-#procs.append(sensor)
-procs.append(clock)
-procs.append(socket_handler)
+from helpers import read_config, init_procs
 
 ###############################################################################
 
 def main ():
+    config = read_config(CONFIG_FILE)
+    procs = init_procs(config)
+
     for p in procs:
         p.start()
 
