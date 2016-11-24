@@ -40,7 +40,6 @@ class Screen:
         """
         Method used to control the 'target_state' of the screen
         """
-        print("We want the screen state to be {0}".format(new_state))
         self.target_state = new_state
         self.reset()
 

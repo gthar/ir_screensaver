@@ -33,6 +33,9 @@ class CountDown(Threadable):
         self.running = True
         self.state = self.count
 
+    def pause(self):
+        self.running = False
+
     def loop(self):
         if self.advance():
             self.action()
