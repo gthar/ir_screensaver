@@ -7,18 +7,43 @@ class Screen:
     We can turn off the screen with tvservice
     """
 
-    def __init__(self, state):
+    def __init__(self, state=True, target_state=True):
         self.state = state
+        self.target_state = target_state
+
+    def turn_on(self):
+        self.state = True
+        print("turning screen on")
+        #os.system("/home/rilla/bin/screen_on")
+
+    def turn_off(self):
+        self.state = False
+        print("turning screen off")
+        #os.system("/home/rilla/bin/screen_off")
 
     def turn(self, new_state):
-
+        """
+        Method used to control the 'state' of the screen
+        """
         if new_state and not self.state:
-            self.state = True
-            os.system("/home/rilla/bin/screen_on")
+            self.turn_on()
 
         elif not new_state and self.state:
-            self.state = False
-            os.system("/home/rilla/bin/screen_off")
+            self.turn_off()
+
+    def reset(self):
+        """
+        Set the current screen state to its target state
+        """
+        self.turn(self.target_state)
+
+    def turn_target(self, new_state):
+        """
+        Method used to control the 'target_state' of the screen
+        """
+        print("We want the screen state to be {0}".format(new_state))
+        self.target_state = new_state
+        self.reset()
 
     def toggle(self):
-        self.turn(not selt.state)
+        self.turn(not self.state)

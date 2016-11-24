@@ -5,8 +5,11 @@
 DEV_PATTERN = "/dev/input/event*"
 STATE_FNAME = "/home/rilla/.screen_state"
 DEFAULT_STATE = True
-IDLE_TIME = 10  # minutes
+#IDLE_TIME = 10  # minutes
+IDLE_TIME = 0.1  # minutes
 SENSOR_PIN = 11
+PORT = 10000
+HOST = '127.0.0.1'
 
 ###############################################################################
 
@@ -17,38 +20,30 @@ import time
 from count_down import CountDown
 from input_dev import InputDev
 from screen import Screen
-from sensor import Sensor
+#from sensor import Sensor
+from socket_handler import SocketHandler
+
+from helpers import activity, set_on, set_off
 
 ###############################################################################
 
-def query_state(fname, default_state=True):
-    values = {"on":    True,
-              "1":     True,
-              "true":  True,
-              "t":     True,
-              "off":   False,
-              "0":     False,
-              "f":     False,
-              "false": False}
-    try:
-        with open(fname) as fh:
-            screen_state = values[fh.read().strip().split()[0].lower()]
-    except:
-        screen_state = default_state
-    return screen_state
-
-screen = Screen(True)
+screen = Screen(state=True, target_state=DEFAULT_STATE)
 clock = CountDown(IDLE_TIME*60, 1, lambda: screen.turn(False))
 
-def activity():
-    clock.reset()
-    wanted_state = query_state(STATE_FNAME, DEFAULT_STATE)
-    screen.turn(wanted_state)
+# procs = [InputDev(x, activity(screen, clock)) for x in glob.glob(DEV_PATTERN)]
+# sensor = Sensor(SENSOR_PIN, activity(screen, clock))
 
-procs = [InputDev(x, activity) for x in glob.glob(DEV_PATTERN)]
-sensor = Sensor(SENSOR_PIN, activity)
-procs.append(sensor)
+procs = []
+
+socket_handler = SocketHandler({"wake":    activity(screen, clock),
+                                "set_on":  set_on(screen, clock),
+                                "set_off": set_off(screen)},
+                               PORT,
+                               HOST)
+
+#procs.append(sensor)
 procs.append(clock)
+procs.append(socket_handler)
 
 ###############################################################################
 
