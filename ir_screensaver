@@ -2,7 +2,7 @@
 
 ###############################################################################
 
-CONFIG_FILE = "/home/rilla/code/python/ir_screensaver/example_config.yaml"
+CONFIG_FILE = "/home/rilla/.config/ir_screensaver.yaml"
 
 ###############################################################################
 

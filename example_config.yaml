@@ -1,6 +1,5 @@
 default state: true
-#idle time: 10
-idle time: 0.1
+idle time: 10
 sensor pin: 11
 port: 10000
 host: 127.0.0.1

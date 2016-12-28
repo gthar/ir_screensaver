@@ -6,7 +6,7 @@ import yaml
 from count_down import CountDown
 from input_dev import InputDev
 from screen import Screen
-#from sensor import Sensor
+from sensor import Sensor
 from socket_handler import SocketHandler
 
 
@@ -45,10 +45,10 @@ def init_procs(config):
     iddle_seconds = config["idle time"] * 60
     clock = CountDown(iddle_seconds, 1, iddle(screen))
 
-    #input_devs = [InputDev(x, activity(screen, clock))
-    #              for x in glob.glob(dev_pattern)]
+    # input_devs = [InputDev(x, activity(screen, clock))
+                  # for x in glob.glob(dev_pattern)]
 
-    #sensor = Sensor(config["sensor pin"], activity(screen, clock))
+    sensor = Sensor(config["sensor pin"], activity(screen, clock))
 
     socket_handler = SocketHandler(wake    = activity(screen, clock),
                                    set_on  = set_on(screen, clock),
@@ -56,5 +56,4 @@ def init_procs(config):
                                    port    = config["port"],
                                    host    = config["host"])
 
-    #return [clock, sensor, socket_handler] + input_devs
-    return [clock, socket_handler]
+    return [clock, sensor, socket_handler]

@@ -13,12 +13,14 @@ class Screen:
     def turn_on(self):
         self.state = True
         print("turning screen on")
-        #os.system("/home/rilla/bin/screen_on")
+        os.system('/usr/bin/tvservice -e "DMT 47"')
+        os.system("/bin/chvt 2")
+        os.system("/bin/chvt 1")
 
     def turn_off(self):
         self.state = False
         print("turning screen off")
-        #os.system("/home/rilla/bin/screen_off")
+        os.system("/usr/bin/tvservice -o")
 
     def turn(self, new_state):
         """
